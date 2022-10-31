@@ -11,8 +11,7 @@ public class Park {
 	Park(){
 		cars = new ArrayList<>();
 	}
-
-	public void addCar(Car car){
-		cars.add(car);
+	Park(List<Car> cars){
+		this.cars = cars;
 	}
 }

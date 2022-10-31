@@ -1,6 +1,6 @@
 package Cars;
 
-public class Car {
+public class Car implements Comparable<Car>{
 	/**
 	 * plateNumber looks like AA0000BB
 	 * plateNumber and model are required fields,
@@ -12,7 +12,7 @@ public class Car {
 	private String color;
 	private final int maxSpeed;
 	private int currentSpeed;
-	private String holder;
+	private String owner;
 
 	/**
 	 * below there are static class Builder which contains two required fields and four optional
@@ -24,7 +24,7 @@ public class Car {
 		private String color = "white";
 		private int maxSpeed;
 		private int currentSpeed = 0;
-		private String holder;
+		private String owner;
 
 		/**
 		 * @param plateNumber is car identifier which doesn't repeat.
@@ -36,7 +36,7 @@ public class Car {
 			this.plateNumber = plateNumber;
 			this.model = model;
 			this.maxSpeed = maxSpeed;
-			this.holder = holder;
+			this.owner = owner;
 
 		}
 
@@ -59,11 +59,11 @@ public class Car {
 		}
 
 		/**
-		 * @param holder is car owner
+		 * @param owner is car owner
 		 * @return the same object Builder class
 		 */
-		public Car.Builder setHolder(String holder){
-			this.holder = holder;
+		public Car.Builder setOwner(String owner){
+			this.owner = owner;
 			return this;
 		}
 
@@ -87,13 +87,22 @@ public class Car {
 		color = builder.color;
 		maxSpeed = builder.maxSpeed;
 		currentSpeed = builder.currentSpeed;
-		holder = builder.holder;
+		owner = builder.owner;
 	}
+
+	public String getPlateNumber(){
+		return plateNumber;
+	}
+
+	public int getMaxSpeed(){
+		return maxSpeed;
+	}
+
 
 	/**
 	 * method increases value of currentSpeed value
 	 */
-	
+
 	public void gas(int value) throws RuntimeException{
 		if(currentSpeed + value > maxSpeed){
 			throw new RuntimeException();
@@ -105,7 +114,7 @@ public class Car {
 	/**
 	 * method decrease value of currentSpeed value
 	 */
-	
+
 	public void brake(int value) throws RuntimeException{
 		if(currentSpeed - value < 0){
 			throw new RuntimeException();
@@ -114,14 +123,19 @@ public class Car {
 		//System.out.println("Уповільнюємось до " + getCurrentSpeed() + " КМ/год");
 	}
 
+
 	/**
 	 * needs for watching at the instance
 	 *
 	 * @return string with all instance fields
 	 */
-	
+
 	public String toString(){
-		return "Марка: " + brand + "\nМодель: " + model + "\nКолір: " + color + "\nМакс. Швидкість: " + maxSpeed + "\nВласник: " + holder + "\nПоточна швидкість: " + currentSpeed;
+		return "Марка: " + brand + "\tМодель: " + model + "\tКолір: " + color + "\tМакс. Швидкість: " + maxSpeed + "\tВласник: " + owner + "\tПоточна швидкість: " + currentSpeed;
+	}
+
+	public String getOwner(){
+		return owner;
 	}
 
 	/**
@@ -129,7 +143,7 @@ public class Car {
 	 *
 	 * @return integer
 	 */
-	
+
 	public int hashCode(){
 		return 31 * (plateNumber != null ? 0 : plateNumber.hashCode());
 	}
@@ -140,11 +154,16 @@ public class Car {
 	 * @param obj is a one of matching instances. The another call this method
 	 * @return true if the instances are equal and false if not
 	 */
-	
+
 	public boolean equals(Object obj){
 		if(obj == null || obj.getClass() != this.getClass()) return false;
 		else if(obj == this) return true;
 		Car car = (Car) obj;
 		return plateNumber == car.plateNumber || (plateNumber != null && plateNumber.equals(car.plateNumber));
+	}
+
+	@Override
+	public int compareTo(Car c){
+		return this.brand.compareTo(c.brand);
 	}
 }

@@ -1,36 +1,33 @@
 package Cars;
 
-import java.util.List;
-
 public class Main {
 	public static void main(String[] args){
 		Car bmw1 = new Car.Builder(Brand.BMW,"AC6776BM","X6",270)
 				.setColor("red")
-				.setHolder("Evgen Zaliznyak")
+				.setOwner("Evgen Zaliznyak")
 				.buidl();
-		Car audi1 = new Car.Builder(Brand.Audi,"AA4792BO","A6",280)
+		Car mercedes1 = new Car.Builder(Brand.Mercedes_Benz,"AO6009AB","Vito",280)
+				.setColor("yellow")
+				.setOwner("Ivan Semenyak")
+				.buidl();
+		Car audi1 = new Car.Builder(Brand.Audi,"AA4792BO","A6",260)
 				.setColor("gray")
 				.setCurrentSpeed(20)
-				.setHolder("Denis Volinskiy")
-				.buidl();
-		Car bmw2 = new Car.Builder(Brand.Mercedes_Benz,"AO6009AB","Vito",150)
-				.setColor("yellow")
-				.setHolder("Ivan Semenyak")
+				.setOwner("Denis Volinskiy")
 				.buidl();
 		Park park = new Park();
-		park.addCar(bmw1);
-		park.addCar(audi1);
-		park.addCar(bmw2);
-		try{
-			bmw2.gas(200);
-			bmw1.gas(400);
-		}catch(RuntimeException e){
-			System.out.println("Перевищена максимальна швидкість або швидксть менша нуля");
-		}
-		List<Car> ourCars = park.getCars();
-		for(Car car :ourCars){
-			System.out.println(car.toString() + "\n");
-		}
-		System.out.println(bmw2.toString());
+		ParkService parkService = new ParkService(park);
+		parkService.addCar(bmw1);
+		parkService.addCar(audi1);
+		parkService.addCar(mercedes1);
+
+		System.out.println("Comparable:\n" + parkService.sortByBrand());
+
+		System.out.println("Comparator:\n"+ parkService.sortByMaxSpeed());
+
+		Park clearPark = new Park(parkService.clearPark());
+		ParkService clearParkService = new ParkService(clearPark);
+		clearParkService.addCar(audi1);
+		System.out.println("Clear and add one:\n" + clearParkService.getCars());
 	}
 }
